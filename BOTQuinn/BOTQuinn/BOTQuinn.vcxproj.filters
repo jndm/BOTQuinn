@@ -18,5 +18,8 @@
     <ClInclude Include="BOTQuinn.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="kps.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
