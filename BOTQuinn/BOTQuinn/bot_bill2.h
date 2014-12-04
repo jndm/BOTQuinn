@@ -1,21 +1,15 @@
 #pragma once
 #include "kps.h"
-#include <unordered_map>
-#include <vector>
 
-using namespace std;
 // Keksi luokallesi uusi nimi!
-class BOTQuinn : public KPS_Bot
+class BOT_Bill : public KPS_Bot
 {
 private:
 		int taktiikka;
 		int taktiikanVaihe;
 		int perakkaisetHaviot;
-		unordered_map<KPS*, int[]> hashmap;
-		int ikkunakoko;
 public:
-		BOTQuinn() {
-			ikkunakoko = 3;
+		BOT_Bill() {
 			taktiikka = 0;
 			taktiikanVaihe = 0;
 			perakkaisetHaviot = 0;
@@ -23,28 +17,55 @@ public:
 		
         // Botin toimintalogiikka pelaa-funktioon!
         KPS pelaa(int kierros,  const KPS *omat, const KPS *vihun) {
-			if(kierros < ikkunakoko) {
-				return (KPS)(rand() % 3);
-			}else if(kierros == ikkunakoko){
-				vector<KPS> tmp;
-				for(int i=kierros-ikkunakoko-1; i<kierros-1; i++){
-					//cout << vihun[i] << endl;
-					tmp.push_back(vihun[i]);
+			if(kierros != 0 && taktiikanVaihe == 0) {
+				int tulos = 0;
+				switch(taktiikka) {
+					case 0:
+						for(int i = kierros - 3; i < kierros; ++i) {
+							if((omat[i] + 1) % 3 == vihun[i]) {
+								--tulos;
+							} else if((omat[i] + 2) % 3 == vihun[i]) {
+								++tulos;
+							}
+						}
+						if( tulos < 0) {
+							++perakkaisetHaviot;
+						} else {
+							perakkaisetHaviot = 0;
+						}
+						
+						if(perakkaisetHaviot == 2) {
+							perakkaisetHaviot = 0;
+							taktiikka = 1;
+						}
+						break;
+					case 1:
+						for(int i = kierros - 4; i < kierros; ++i) {
+							if((omat[i] + 1) % 3 == vihun[i]) {
+								--tulos;
+							} else if((omat[i] + 2) % 3 == vihun[i]) {
+								++tulos;
+							}
+						}
+						if( tulos < 0) {
+							++perakkaisetHaviot;
+						} else {
+							perakkaisetHaviot = 0;
+						}
+						
+						if(perakkaisetHaviot == 2) {
+							perakkaisetHaviot = 0;
+							taktiikka = 0;
+						}
+						break;
+					default:
+						break;
 				}
-				KPS* key = &tmp[0];
-				
-				unordered_map<KPS*, int[]>::iterator it = hashmap.find(key);
-				if ( it == hashmap.end() ) { //Ei löydy
-
-				}else{						//löytyi
-
-				}
-				
 			}
 		
 			
 			if(kierros <= 1) {
-				
+				return (KPS)(rand() % 3);
 			} else {
 				int k = 2;
 				if (kierros > 11) {
@@ -108,5 +129,5 @@ public:
 
         // Keksi botille osuva nimi!
         void botin_nimi(std::string &nimi)
-        { nimi = "BOT Quinn"; }
+        { nimi = "BOT Bill"; }
 };

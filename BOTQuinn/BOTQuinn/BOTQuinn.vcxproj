@@ -78,8 +78,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="arbalest.h" />
     <ClInclude Include="BOTQuinn.h" />
+    <ClInclude Include="bot_bill2.h" />
+    <ClInclude Include="derpbot.h" />
+    <ClInclude Include="extremebot.h" />
+    <ClInclude Include="hangman.h" />
+    <ClInclude Include="joku_botti.h" />
     <ClInclude Include="kps.h" />
+    <ClInclude Include="mirobotti.h" />
+    <ClInclude Include="mybot.h" />
+    <ClInclude Include="oma_botti.h" />
+    <ClInclude Include="oma_botti_tapio_ja_juuso.h" />
+    <ClInclude Include="paviaani_botti.h" />
+    <ClInclude Include="perusbotit.h" />
+    <ClInclude Include="sorvisto.h" />
+    <ClInclude Include="TT_Botti.h" />
+    <ClInclude Include="turo.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="turnaus.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -21,5 +21,55 @@
     <ClInclude Include="kps.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="arbalest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bot_bill2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="derpbot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="extremebot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hangman.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="joku_botti.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mirobotti.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mybot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="oma_botti.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="oma_botti_tapio_ja_juuso.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="paviaani_botti.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="perusbotit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sorvisto.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TT_Botti.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="turo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="turnaus.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
