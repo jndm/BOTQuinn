@@ -18,9 +18,9 @@
 #include "oma_botti_tapio_ja_juuso.h"
 #include "BOTQuinn.h"
 
-#define TURNAUSTEN_LKM 100
+#define TURNAUSTEN_LKM 5
 #define KIERROKSET_PER_OTTELU 1000
-#define BOTTIEN_LKM 2
+#define BOTTIEN_LKM 6
 
 int pisteyta_kierros(KPS oma, KPS vihu);
 int pisteyta_ottelu(int omat_pisteet, int vihun_pisteet);
@@ -132,23 +132,23 @@ KPS_Bot* luo_botti(int i)
         switch(i)
         {
                 case 0: return new BOTQuinn; 
-                case 1: return new Oma_Botti_Tapio_Ja_Juuso; 
-                case 2: return new Bot_Aina_Sakset;
-                case 3: return new Bot_Vaihda_Aina;
-                case 4: return new Bot_Biittaa_Edellinen;
-                case 5: return new Turo;
-				case 6: return new Paviaani_Botti;
-				case 7: return new hangman;
-				case 8: return new Robobotti;
-				case 9: return new Joku_Botti;
-				case 10: return new ExtremeBot;
+                case 1: return new Bot_Aina_Kivi;
+                case 2: return new Bot_Aina_Paperi;
+                case 3: return new Bot_Aina_Sakset;
+                case 4: return new Bot_Vaihda_Aina;
+                case 5: return new Bot_Biittaa_Edellinen;
+                case 6: return new Oma_Botti_Tapio_Ja_Juuso;
+                case 7: return new Turo;
+				case 8: return new Paviaani_Botti;
+				case 9: return new hangman;
+				case 10: return new Robobotti;
                 case 11: return new Arbalest;
                 case 12: return new TT_Botti;
 				case 13: return new BOT_Bill;
                 case 14: return new mirobotti;
                 case 15: return new DerpBot;
-                case 16: return new Bot_Aina_Kivi;
-                case 17: return new Bot_Aina_Paperi;
+				case 16: return new Joku_Botti;
+				case 17: return new ExtremeBot;
                 case 18: return new mybot;
         }
         return 0;

@@ -4,109 +4,84 @@
 #include <vector>
 
 using namespace std;
-// Keksi luokallesi uusi nimi!
+
+namespace std
+{
+    template<>
+    struct hash<vector<int>>
+    {
+		size_t operator()(vector<int> const& vec) const{
+			std::size_t seed = 0;
+			for(auto& i : vec) {
+				seed ^= i + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+			}
+			return seed;
+		}
+
+		bool operator()(vector<int> const& x, vector<int> const& y) const{
+			return x == y;
+		}
+    };
+}
+
 class BOTQuinn : public KPS_Bot
 {
 private:
-		int taktiikka;
-		int taktiikanVaihe;
-		int perakkaisetHaviot;
-		unordered_map<KPS*, int[]> hashmap;
-		int ikkunakoko;
+	unordered_map<vector<int>, vector<int>> hashmap;
+	int ikkunakoko;
+	vector<int> edellinen;
+
+	int laskeTodennakoisin(vector<int> maarat)
+	{
+		int max = -1;
+		for(int i = 0; i < 3; ++i)
+			max = max < maarat.at(i) ? i : max;
+		return (max + 1) % 3;
+	}
+
+	void paivitaMaarat(vector<int> key, int vihun)
+	{
+		auto it = hashmap.find(key);
+		if( it != hashmap.end() ) {
+			vector<int> maarat = it->second;
+			++maarat[vihun];
+			hashmap[key] = maarat;
+		}
+	}
 public:
-		BOTQuinn() {
-			ikkunakoko = 3;
-			taktiikka = 0;
-			taktiikanVaihe = 0;
-			perakkaisetHaviot = 0;
+	BOTQuinn() {
+		ikkunakoko = 4;
+		edellinen = vector<int>();
+	}
+
+	// Botin toimintalogiikka pelaa-funktioon!
+	KPS pelaa(int kierros, const KPS *omat, const KPS *vihun) {
+		int r = rand() % 3;
+		if(int(edellinen.size()) != 0) {
+			paivitaMaarat(edellinen, vihun[kierros-1]);
 		}
-		
-        // Botin toimintalogiikka pelaa-funktioon!
-        KPS pelaa(int kierros,  const KPS *omat, const KPS *vihun) {
-			if(kierros < ikkunakoko) {
-				return (KPS)(rand() % 3);
-			}else if(kierros == ikkunakoko){
-				vector<KPS> tmp;
-				for(int i=kierros-ikkunakoko-1; i<kierros-1; i++){
-					//cout << vihun[i] << endl;
-					tmp.push_back(vihun[i]);
-				}
-				KPS* key = &tmp[0];
-				
-				unordered_map<KPS*, int[]>::iterator it = hashmap.find(key);
-				if ( it == hashmap.end() ) { //Ei löydy
-
-				}else{						//löytyi
-
-				}
-				
+		if(kierros >= ikkunakoko) {
+			vector<int> key;
+			for(int i = kierros - ikkunakoko; i < kierros; i++){
+				key.push_back(vihun[i]);
 			}
-		
-			
-			if(kierros <= 1) {
-				
+			edellinen = key;
+
+			auto it = hashmap.find(key);
+			if ( it == hashmap.end() ) {
+				//Ei löydy
+				vector<int> maarat (3,0);
+				hashmap.insert(make_pair(key, maarat));
 			} else {
-				int k = 2;
-				if (kierros > 11) {
-					k = kierros - 10;
-				}
-				
-				bool sama = true;
-				bool biittaaEdellinen = true;
-				bool vaihdaAina = true;
-				for (int i = k; i <= kierros; ++i) {
-					if(vihun[kierros - 1] != vihun[kierros - 2]) {
-						sama = false;
-					}
-					if((vihun[kierros - 1]) % 3 != (omat[kierros - 2] + 1) % 3) {
-						biittaaEdellinen = false;
-					}
-					if(vihun[kierros - 1] == vihun[kierros - 2]) {
-						vaihdaAina = false;
-					}
-				}
-				if (sama) {
-					return (KPS) ((vihun[kierros - 1] + 1) % 3);
-				}
-				if (biittaaEdellinen) {
-					return (KPS) ((omat[kierros - 1] + 2) % 3);
-				}
-				if (vaihdaAina) {
-					return (KPS) ((vihun[kierros -1] + 2) % 3);
-				}
-				int r;
-				switch(taktiikka) {
-					case 0:
-						if(taktiikanVaihe == 0) {
-							++taktiikanVaihe;
-							r = (kierros % 3);
-						} else if (taktiikanVaihe == 1) {
-							++taktiikanVaihe;
-							r = omat[kierros - 1];
-						} else {
-							++taktiikanVaihe;
-							r = ((omat[kierros - 1] + 2) % 3);
-							taktiikanVaihe = taktiikanVaihe % 3;
-						}
-						break;
-					case 1:
-						if(taktiikanVaihe < 3) {
-							++taktiikanVaihe;
-							r = ((1000 - kierros) % 3);
-						} else {
-							++taktiikanVaihe;
-							r = omat[kierros - 1];
-							taktiikanVaihe = taktiikanVaihe % 4;
-						}
-						break;
-					default:
-						break;
-				}
-				return (KPS) r;
+				//Löytyy
+				r = laskeTodennakoisin(it->second);
 			}
 		}
 
-        // Keksi botille osuva nimi!
-        void botin_nimi(std::string &nimi)
-        { nimi = "BOT Quinn"; }
+		return (KPS) r;
+	}
+
+	// Keksi botille osuva nimi!
+	void botin_nimi(std::string &nimi)
+	{ nimi = "BOT Quinn"; }
 };
