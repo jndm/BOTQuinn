@@ -2,6 +2,7 @@
 #include "kps.h"
 #include <unordered_map>
 #include <vector>
+#include <fstream>
 
 using namespace std;
 
@@ -30,6 +31,7 @@ private:
 	unordered_map<vector<int>, vector<int>> hashmap;
 	int ikkunakoko;
 	vector<int> edellinen;
+	ofstream file;
 
 	int laskeTodennakoisin(vector<int> maarat)
 	{
@@ -52,6 +54,12 @@ public:
 	BOTQuinn() {
 		ikkunakoko = 4;
 		edellinen = vector<int>();
+		file.open("log.txt");
+		file << "-" << endl;
+	}
+
+	~BOTQuinn(){
+		file.close();
 	}
 
 	// Botin toimintalogiikka pelaa-funktioon!
@@ -77,7 +85,16 @@ public:
 				r = laskeTodennakoisin(it->second);
 			}
 		}
-
+		for(auto iterator = hashmap.begin(); iterator != hashmap.end(); iterator++){
+			for(auto iterator2 = iterator->first.begin(); iterator2 != iterator->first.end(); iterator2++){
+				file << *iterator2;
+			}
+			file << " ";
+			for(auto iterator2 = iterator->second.begin(); iterator2 != iterator->second.end(); iterator2++){
+				file << *iterator2 << "|";
+			}
+			file << endl;
+		}
 		return (KPS) r;
 	}
 
