@@ -20,7 +20,7 @@
 
 #define TURNAUSTEN_LKM 5
 #define KIERROKSET_PER_OTTELU 1000
-#define BOTTIEN_LKM 2
+#define BOTTIEN_LKM 19
 
 int pisteyta_kierros(KPS oma, KPS vihu);
 int pisteyta_ottelu(int omat_pisteet, int vihun_pisteet);
@@ -132,11 +132,11 @@ KPS_Bot* luo_botti(int i)
         switch(i)
         {
                 case 0: return new BOTQuinn; 
-                /*case 1: return new Bot_Aina_Kivi;
+                case 1: return new Bot_Aina_Kivi;
                 case 2: return new Bot_Aina_Paperi;
                 case 3: return new Bot_Aina_Sakset;
                 case 4: return new Bot_Vaihda_Aina;
-                */case 1: return new Bot_Biittaa_Edellinen;
+                case 5: return new Bot_Biittaa_Edellinen;
                 case 6: return new Oma_Botti_Tapio_Ja_Juuso;
                 case 7: return new Turo;
 				case 8: return new Paviaani_Botti;

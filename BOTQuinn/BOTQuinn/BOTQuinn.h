@@ -30,15 +30,25 @@ class BOTQuinn : public KPS_Bot
 private:
 	unordered_map<vector<int>, vector<int>> hashmap;
 	int ikkunakoko;
-	vector<int> edellinen;
+	vector<int> edellinen3, edellinen4, edellinen5;
 	ofstream file;
 
-	int laskeTodennakoisin(vector<int> maarat)
-	{
-		int max = -1;
-		for(int i = 0; i < 3; ++i)
-			max = max < maarat.at(i) ? i : max;
-		return (max + 1) % 3;
+	int laskeTodennakoisin(vector<int> maarat) {
+		int ret = 0;
+		float r = ((float) rand() / (RAND_MAX));
+		int lkm = 0;
+		for(int i = 0; i < 3; ++i) {
+			lkm += maarat[i];
+		}
+		float kumul = 0;
+		for(int i = 0; i < 3; i++) {
+			kumul += maarat[i]/(float)lkm;
+			if(r < kumul) {
+				ret = i;
+				break;
+			}
+		}
+		return (ret + 1) % 3;
 	}
 
 	void paivitaMaarat(vector<int> key, int vihun)
@@ -52,48 +62,69 @@ private:
 	}
 public:
 	BOTQuinn() {
-		ikkunakoko = 4;
-		edellinen = vector<int>();
-		file.open("log.txt");
-		file << "-" << endl;
-	}
-
-	~BOTQuinn(){
-		file.close();
+		ikkunakoko = 3; //pienimmän ikkunan koko
+		edellinen3 = vector<int>();
+		edellinen4 = vector<int>();
+		edellinen5 = vector<int>();
 	}
 
 	// Botin toimintalogiikka pelaa-funktioon!
 	KPS pelaa(int kierros, const KPS *omat, const KPS *vihun) {
 		int r = rand() % 3;
-		if(int(edellinen.size()) != 0) {
-			paivitaMaarat(edellinen, vihun[kierros-1]);
-		}
-		if(kierros >= ikkunakoko) {
-			vector<int> key;
-			for(int i = kierros - ikkunakoko; i < kierros; i++){
-				key.push_back(vihun[i]);
-			}
-			edellinen = key;
 
-			auto it = hashmap.find(key);
-			if ( it == hashmap.end() ) {
-				//Ei löydy
-				vector<int> maarat (3,0);
-				hashmap.insert(make_pair(key, maarat));
-			} else {
-				//Löytyy
-				r = laskeTodennakoisin(it->second);
-			}
+		//Päivitetään ikkunoiden arvot
+		if(int(edellinen3.size()) != 0) {
+			paivitaMaarat(edellinen3, vihun[kierros-1]);
 		}
-		for(auto iterator = hashmap.begin(); iterator != hashmap.end(); iterator++){
-			for(auto iterator2 = iterator->first.begin(); iterator2 != iterator->first.end(); iterator2++){
-				file << *iterator2;
+
+		if(int(edellinen4.size()) != 0) {
+			paivitaMaarat(edellinen4, vihun[kierros-1]);
+		}
+
+		if(int(edellinen5.size()) != 0) {
+			paivitaMaarat(edellinen5, vihun[kierros-1]);
+		}
+
+		if(kierros >= ikkunakoko) {
+			vector<int> key3;
+			vector<int> key4;
+			vector<int> key5;
+			//Haetaan aikaisempien kierrosten kombinaatioita ikkunoiksi
+			for(int i = kierros - ikkunakoko - 2; i < kierros; i++){
+				if(i > kierros - ikkunakoko - 1)
+					key3.push_back(vihun[i]);
+				if(kierros >= ikkunakoko - 1 && i > kierros - ikkunakoko)
+					key4.push_back(vihun[i]);
+				if(kierros >= ikkunakoko)
+					key5.push_back(vihun[i]);
 			}
-			file << " ";
-			for(auto iterator2 = iterator->second.begin(); iterator2 != iterator->second.end(); iterator2++){
-				file << *iterator2 << "|";
+			//Merkitään edellisellä kierroksella tulleeksi ikkunaksi
+			edellinen3 = key3;
+			edellinen4 = key4;
+			edellinen5 = key5;
+
+			auto it5 = hashmap.find(key5);
+			vector<int> maarat (3,0);
+			if ( it5 == hashmap.end() ) {  //Ei löydy 5 sarjaa
+				hashmap.insert(make_pair(key5, maarat));
+				auto it4 = hashmap.find(key4);
+				if ( it4 == hashmap.end() ) {  //Ei löydy 4 sarjaa
+					hashmap.insert(make_pair(key4, maarat));
+					auto it3 = hashmap.find(key3);
+					if ( it3 == hashmap.end() ) {  //Ei löydy 3 sarjaa
+						hashmap.insert(make_pair(key4, maarat));
+					} else {
+						//Löytyy 3 sarja
+						r = laskeTodennakoisin(it3->second);
+					}
+				} else {
+					//Löytyy 4 sarja
+					r = laskeTodennakoisin(it4->second);
+				}
+			} else {
+				//Löytyy 5 sarja
+				r = laskeTodennakoisin(it5->second);
 			}
-			file << endl;
 		}
 		return (KPS) r;
 	}
