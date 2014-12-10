@@ -2,7 +2,6 @@
 #include "kps.h"
 #include <unordered_map>
 #include <vector>
-#include <fstream>
 
 using namespace std;
 
@@ -31,7 +30,6 @@ private:
 	unordered_map<vector<int>, vector<int>> hashmap;
 	int ikkunakoko;
 	vector<int> edellinen3, edellinen4, edellinen5;
-	ofstream file;
 
 	int laskeTodennakoisin(vector<int> maarat) {
 		int ret = 0;
